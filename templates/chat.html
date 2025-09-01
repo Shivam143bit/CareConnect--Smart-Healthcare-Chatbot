@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Medical Chatbot</title>
+  <style>
+    body { font: 16px system-ui; margin: 2rem auto; max-width: 760px; }
+    .msg { margin: .5rem 0; padding: .6rem .8rem; border-radius: 8px; }
+    .user { background: #eef; align-self: flex-end; }
+    .assistant { background: #efe; }
+    .system { background: #f7f7f7; color: #555; }
+    #chat { display: flex; flex-direction: column; gap: .3rem; }
+  </style>
+</head>
+<body>
+  <h2>Medical Chatbot</h2>
+  <p><small>General information only. Not a diagnosis or prescription. In emergencies, call local services.</small></p>
+  
+  <div id="chat"></div>
+  <form id="f">
+    <input id="q" placeholder="Ask a health question..." style="width:80%" />
+    <button>Send</button>
+  </form>
+
+  <script>
+document.getElementById("chat-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const input = document.getElementById("message-input");
+    const message = input.value.trim();
+    if (!message) return;
+
+    // Append user message
+    const chatBox = document.getElementById("chat-box");
+    chatBox.innerHTML += `<div>You: ${message}</div>`;
+    input.value = "";
+
+    try {
+        const response = await fetch("/chat/api/", {
+    method: "POST",
+    headers: {
+        "X-CSRFToken": getCookie("csrftoken"),
+        "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({ message })
+  });
+
+        const data = await response.json();
+        if (data.response) {
+            chatBox.innerHTML += `<div>Bot: ${data.response}</div>`;
+        } else {
+            chatBox.innerHTML += `<div>Bot: Error - ${data.error}</div>`;
+        }
+    } catch (error) {
+        chatBox.innerHTML += `<div>Bot: Network error. Try again.</div>`;
+    }
+});
+</script>
+
+</body>
+</html>
