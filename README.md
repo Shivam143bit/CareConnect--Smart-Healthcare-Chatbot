@@ -5,7 +5,7 @@ CareConnect is an AI-powered medical chatbot designed to assist users with gener
 
 ## How It Works
 
-## 1. Document Ingestion & Knowledge Base
+### 1. Document Ingestion & Knowledge Base
 All healthcare-related documents, guidelines, and medical knowledge sources are stored in a folder (medical_docs).
 
 These documents are pre-processed and split into chunks using LangChain’s RecursiveCharacterTextSplitter.
@@ -14,14 +14,14 @@ Each chunk is converted into vector embeddings via OpenAI Embeddings.
 
 The embeddings are indexed and stored in FAISS (Facebook AI Similarity Search) to enable fast semantic search.
 
-## 2.User Interaction (Frontend)
+### 2.User Interaction (Frontend)
 The user interacts through a chat interface (chat.html).
 
 Queries are sent securely via AJAX requests with CSRF protection (X-CSRFToken).
 
 The frontend dynamically displays both user messages and chatbot responses.
 
-## 3. Backend Processing (Django + REST Framework)
+### 3. Backend Processing (Django + REST Framework)
 The query hits a Django REST API endpoint.
 
 The backend fetches the most relevant information from FAISS using semantic similarity.
@@ -30,7 +30,7 @@ If required, the query is further passed to an LLM (OpenAI GPT) for generating a
 
 The chatbot ensures contextual relevance by storing chat history (sessions & messages) in a database.
 
-## 4. Response Delivery
+### 4. Response Delivery
 The chatbot returns the answer to the frontend in JSON format.
 
 The frontend updates the chat UI instantly, providing a smooth, human-like interaction.
